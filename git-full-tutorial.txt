@@ -1,0 +1,844 @@
+        GGGGGGGGGGGGGIIIIIIIIIITTTTTTTTTTTTTTTTTTTTTTT
+     GGG::::::::::::GI::::::::IT:::::::::::::::::::::T
+   GG:::::::::::::::GI::::::::IT:::::::::::::::::::::T
+  G:::::GGGGGGGG::::GII::::::IIT:::::TT:::::::TT:::::T
+ G:::::G       GGGGGG  I::::I  TTTTTT  T:::::T  TTTTTT
+G:::::G                I::::I          T:::::T        
+G:::::G                I::::I          T:::::T        
+G:::::G    GGGGGGGGGG  I::::I          T:::::T        
+G:::::G    G::::::::G  I::::I          T:::::T        
+G:::::G    GGGGG::::G  I::::I          T:::::T        
+G:::::G        G::::G  I::::I          T:::::T        
+ G:::::G       G::::G  I::::I          T:::::T        
+  G:::::GGGGGGGG::::GII::::::II      TT:::::::TT      
+   GG:::::::::::::::GI::::::::I      T:::::::::T      
+     GGG::::::GGG:::GI::::::::I      T:::::::::T      
+        GGGGGG   GGGGIIIIIIIIII      TTTTTTTTTTT      
+                                                      
+                                                      
+
+
+// WHAT IS GIT? ======
+// ===================
+
+
+
+Git is software for tracking changes in any set of files, 
+usually used for coordinating work among programmers,
+collaboratively developing source code during software development.
+
+
+
+// VISUALIZE GIT =====
+// ===================
+
+> See https://git-school.github.io/visualizing-git/
+
+
+
+// INIT, CONFIG, STATUS AND CLONING =====
+// ======================================
+
+
+
+// CONFIGURE GIT WITH USERNAME AND EMAIL
+
+git config --global user.name "GranFariduz"
+git config --global user.email "relampagolanzadel04@gmail.com"
+
+
+// CHANGE THE CORE EDITOR (DEFAULT IS VIM)
+
+git config --global core.editor "code --wait"
+
+
+// CHECK THE GIT CONFIGURATION
+
+git config -l
+
+
+// INITIALISE A DIRECTORY AS A GIT REPOSITORY (LOCAL)
+
+git init
+
+
+// CHECK THE CURRENT STATUS OF GIT WORKING DIRECTORY AND STAGING AREA
+
+git status
+
+
+// CLONE (CREATE A LOCAL COPY) A REPOSITORY
+
+git clone <repository-url>
+
+
+
+// STAGING AND COMMITTING =====
+// ============================
+
+
+
+Info:
+The staging area is like a rough draft space, 
+it's where you can git add the version of a file or multiple files,
+that you want to save in your next commit.
+
+
+// ADD FILES TO THE STAGING AREA
+
+
+git add .             (to add all the files, which are untracked or modified ONLY IN THE CURRENT DIRECTORY)
+git add index.html    (to add a single file, `index.html` as an example)
+git add -A            (to add every single file which are untracked or modified)
+
+
+// UNSTAGE (UNDO A PREVIOUS GIT ADD) FILES FROM STAGING AREA
+
+git restore --staged .              (to unstage all current staged files)
+git rm -r --cached .                (same as above, -r is for `recursively`)
+git restore --staged index.html     (to unstage a single file, `index.html` as an example)
+git rm --cached index.html          (same as above)
+
+
+// DISCARD UNCOMMITTED LOCAL CHANGES
+
+git restore index.html              (discard local changes in file `index.html`)
+git restore index.html style.css    (for mutiple files)
+git restore .                       (discard all local changes)
+
+
+// COMMITTING FILES
+
+Info:
+Commits basically act as a checkpoint in your project,
+for example when you complete a feature.
+
+git commit -m "Setup project"     (committing the current staging area with a message)
+git commit -a -m "Setup project"  (stages all modified and deleted files and commits, does not affect new files which are unstaged)
+
+
+// CHECK THE COMMIT HISTORY THROUGH LOGS
+
+Info:
+This command shows you the commit history,
+where each commit has a unique hash. We can use the hash,
+to view all the changes made during this commit.
+
+git log
+git log <branch>        (log for a particular branch)
+git log --oneline       (for a short one line output)
+
+
+// VIEW THE CHANGES IN A COMMIT
+
+git show <hash>
+
+
+// AMENDING THE MOST RECENT DONE COMMIT
+
+git commit -m "Fuck you"                  (bad commit message, we can correct it using --amend)
+git add someotherfileyouforgot.txt        (we can also add a file we forgot to stage in the last commit)
+git commit --amend -m "Added style.css"   (now, the new file will be added to the last commit and the commit message will read 'Added style.css')
+
+
+
+// BRANCHES =====
+// ==============
+
+
+
+Info:
+A branch represents an independent line of development. 
+Branches serve as an abstraction for the edit/stage/commit process.
+
+
+// LIST ALL THE BRANCHES IN YOUR REPOSITORY
+
+git branch      (shows all the local branches)
+git branch -r   (shows all the remote branches)
+git branch -a   (shows all the branches)
+git branch -v   (shows all branches, along with the latest commits in them)
+git branch -vv  (same as above, but also shows the remote tracking branches)
+
+
+// CREATE A NEW BRANCH (USES THE CURRENT BRANCH AS THE BASE FOR THE NEW BRANCH)
+
+git branch <branch>                         (creates a branch from the current branch, does not switch to the newly created branch)
+git branch <branch> <existing-branch>       (creates a branch from an existing branch)
+
+
+// SWITCH TO A BRANCH
+
+git switch <branch>
+git checkout <branch>
+
+
+// CREATES A BRANCH AND SWITCH TO THAT BRANCH
+
+git switch -c <branch>
+git checkout -b <branch>
+
+
+// SWITCH TO THE PREVIOUS BRANCH
+
+git switch -
+git checkout -
+
+
+// RENAME THE CURRENT BRANCH
+
+git branch -m <branch>
+
+
+// DELETING A BRANCH (LOCAL AND REMOTE)
+
+git branch -d <branch>                (this operation is 'safe', git prevents you from deleting the branch if it has unmerged changes [local])
+git branch -D <branch>                (force delete the branch, even if it has unmerged changes [local])
+git push <remote> --delete <branch>   (pushes a signal to the remote repo to remove a remote branch)
+
+
+// PUSH A BRANCH
+
+git push --set-upstream origin <branch>   (sets remote origin/<branch> as default remote branch, and pushes to the remote server)
+git push -u origin <branch>               (same as above, -u shorthand for --set-upstream)
+git push                                  (after setting upstream, we can just use this command, it will use the currently set upstream)
+
+
+
+// MERGING ======
+// ==============
+
+
+
+Info:
+Merging just means take the new data created by a git branch,
+and integrating them into another branch.
+
+HEAD: 
+It refers to the tip (most recent commit) of the current branch we are viewing.
+
+Fast-forward merge: 
+For example, if we created a new branch called `bugfix`,
+from the `master` branch, and made some commits in `bugfix` branch, but the `master`
+branch is still without any new commits, in this scenario, if we do a merge, git will perform
+a `fast-forward` merge, meaning, git simply moves the source branch pointer to the target branch pointer,
+without creating an extra merge commit.
+
+Merge conflicts: 
+A merge conflict occurs when we try to merge a branch which has changes,
+to the same file in the same places as the current HEAD branch. Before merging,
+we have to resolve these conflicts, and then create an extra merge commit.
+
+
+// MERGE A BRANCH INTO ANOTHER
+
+git merge bugfix              (whilst you're on the `master` branch, this will merge `bugfix` into `master`)
+git merge --no-ff bugfix      (same as above, but it makes sure that the merge won't be a fast-forward, and will create a merge commit)
+git merge --squash bugfix     (same as `git merge bugfix`, but it won't give you any commit history of `bugfix`, 
+                              also, you have to commit the changes yourself after the merge)
+git merge --abort             (to abort the merge when a merge is ongoing (<main | MERGING> ex of an ongoing merge indicator))
+
+
+
+// DIFFS ======
+// ============
+
+
+
+Info:
+It is an informative command used to view the changes between commits,
+files, branches, working directory and more. 
+
+Chunk Headers:
+These contain the range information of the diff for each file.
+
+@@ -l,s +l,s @@
+
+minus(-) indicates the original file, plus (+) indicates the new (modified) file.
+l is the starting line number and s is the number of lines the change (c)hunk applies to for each respective file.
+
+Ex: @@ -1,5 +1,9 @@
+
+The -1,5 is in the original file (indicated by the -). It shows that that first line is the start and 5 affected / context lines.
+The +1,9 is in the new (modified) file (indicated by the +) and again first line is the start and 9 affected / context lines.
+
+
+// VIEW THE CURRENT DIFFERENCE (DIFF) AFTER CHANGES IN THE REPOSITORY
+
+git diff                                      (lists all changes in the working directory that are not staged)
+git diff HEAD                                 (lists all changes in the working directory since the last commit (including staged changes))
+git diff HEAD <file>                          (same as above command, but for a specific file)
+git diff --staged                             (lists all changes in the working directory that are staged)
+git diff --cached                             (same as above command)
+git diff --staged <file>                      (same as above 2 commands, but for a specific file)
+git diff <branch1> <branch2>                  (lists all changes between two branches, <branch2> considered base)
+git diff <commit-hash1> <commit-hash2>        (lists all changes between two commits, <commit2> considered base)
+git diff <tag1> <tag2>                        (lists all changes between two tags, <tag2> considered base)
+
+
+HINT:
+We can use HEAD~1, HEAD~2 to refer to 1 or 2 commits ago (respectively) instead of using commit hashes.
+
+
+
+// STASHING ======
+// ===============
+
+
+
+Info:
+In a scenario, where we have made changes to a file,
+that might get overwritten if we switch the branch without committing,
+stashing helps us to set aside these changes without having to make unnecessary commits.
+We can come back to these changes later, and apply them to a branch.
+Basically, we can set aside changes that are not yet ready to commit,
+and apply them whenever we feel necessary.
+
+
+// SAVE (SET ASIDE) CHANGES THAT ARE NOT YET READY TO COMMIT
+
+git stash                                 (will take all your uncommitted changes (staged and unstaged) and stash them)
+git stash pop                             (apply the most recent stash, and delete it)
+git stash list                            (list all the current stashed changes, top one is the most recent stash)
+git stash apply                           (apply the most recent stash, without removing it from the stash)
+git stash apply stash@{stash_number}      (same as above, but only applies a particular stash)
+git stash drop                            (delete the most recent stash)
+git stash drop stash@{stash_number}       (delete a particular stash)
+git stash clear                           (delete all stashes)
+
+
+
+// UNDOING CHANGES, TIME TRAVELLING ======
+// =======================================
+
+
+
+Detached Head State:
+A detached HEAD occurs when you check out to a commit that is not a branch. 
+The term detached HEAD tells you that you are not viewing the most recent commit of any branch in the repository.
+In this state, we can make new branch based off of the commit we are viewing, 
+make some changes and stage and commit them.
+
+
+// GOING BACK TO THE STATE OF A PREVIOUS COMMIT
+
+git checkout <commit-hash>         (going back to the state we were in after this commit)
+git checkout HEAD~1                (going back to the state we were in one commit ago)
+git checkout HEAD~2                (going back to the state we were in two commits ago, and so on...)
+git switch <branch>                (switch to a branch to re-attach the detached HEAD)
+
+
+// DISCARDING CHANGES ([IRREVERSIBLE])
+
+git checkout HEAD <file(s)>                      (resets the file to the state of the last commit (meaning, where HEAD points to))
+git restore --source HEAD <file(s)>              (same as above)
+git restore <file(s)>                            (same as above)
+git restore --source <commit-hash> <file(s)>     (restore the state of a file to when a particular commit took place)
+git restore --source HEAD~1 <file(s)>            (same as above, but to one commit ago)
+
+
+// RESET THE COMMITS ([IRREVERSIBLE])
+
+git reset <commit-hash>             (undo all the commits upto this particular commit, keeps the uncommitted changes)
+git reset --hard <commit-hash>      (same as above, but discards all uncommitted changes)
+git reset --hard                    (discards all uncommitted changes)
+
+
+// REVERT COMMITS
+
+git revert <commit-hash>          (reverts the working directory to the state of a particular commit, but does not remove any commits,
+                                  instead, it creates a new commit)
+
+
+
+// REMOTES, FETCHING AND PULLING ======
+// ====================================
+
+
+
+Info:
+Before we push our local repo to a cloud based service like Github,
+we need to setup something called a `remote`. It's basically a destination URL,
+referring to the remote repository we have made on, say, Github.
+When we clone a repo from Github (or any service), it assigns a default remote of `origin`,
+so `origin` is just another remote name without any particular significance.
+
+Remote Tracking Branches:
+At the time we last communicated with a remote repository,
+it tells us where a particular branch was pointing.
+
+For a remote tracking branch: origin/master,
+it references the state of the master branch on the remote named origin.
+
+
+// ADDING A NEW REMOTE
+
+git remote add <remote-name> <repository-url>       (adding a new remote, where we can name the remote anything)
+
+
+// LIST THE REMOTES
+
+git remote          (list all the remotes)
+git remote -v       (same as above, but v for verbose, for verbose output)
+
+
+// RENAME A REMOTE
+
+git remote rename <oldname> <newname>
+
+
+// REMOVE A REMOTE
+
+git remote remove <remote-name>
+
+
+// PUSH TO A REMOTE
+
+git push <remote> <branch>
+
+
+// CHECKOUT TO A REMOTE TRACKING BRANCH
+
+git checkout <remote>/<branch>      (will leave in detached HEAD state, 
+                                    meaning we will be viewing the last commit we pushed to the remote tracking branch)
+
+
+// MAKE A LOCAL BRANCH FROM REMOTE TRACKING BRANCH
+
+Info:
+When we clone a repository, it may come with many branches,
+but we won't have local branches referring to those other branches except `main` (default branch),
+so, we can check the remote tracking branches, and then use the below commands to setup a local branch,
+which tracks a remote tracking branch on the repository.
+
+git switch <remote-branch-name>           (this will fail if there is no remote branch of the entered name)
+git checkout --track <remote>/<branch>    (same as above)
+
+
+// FETCHING CHANGES FROM A REMOTE REPO
+
+Info:
+When we work on a project with other collaborators,
+there might be a case when someone has pushed changes (made a new commit, a new branch etc) to the repo,
+and we don't have those changes, so to get those changes we need to fetch them with `git fetch`.
+Note that `git fetch` does not actually merge those changes into the working directory,
+it only sets the <remote>/<branch> (remote tracking branch) to be up to date with the remote repository.
+To get those changes in the working directory, we need to use `git merge` or `git rebase` (we will study this later).
+
+git fetch <remote> <branch>       (this will set this remote branch to be up to date with the remote repo)
+git fetch <remote>                (same as above, but will fetch all the changes from the remote repo, not only a specific branch)
+git merge <remote>/<branch>       (this will merge the fetched changes into the current branch)
+git pull <remote> <branch>        (a shortcut command to run both of the above at once)
+git pull                          (same as above, but it will automatically try to fetch and merge from <remote>/<current-branch>)
+git pull --rebase                 (uses rebase instead of merge, after fetching changes, so basically, sets your local commits aside,
+                                  fetches and applies the commits from remote branch, and then puts the local commits on top of those commits)
+
+
+
+// REBASE AND INTERACTIVE REBASE ======
+// ====================================
+
+
+
+Info:
+In essence, rebase also does similar things as `merge`,
+ie. getting the changes from a branch to another, but the way it does that,
+is very different. 
+> See https://www.atlassian.com/git/tutorials/rewriting-history/git-rebase
+> Try out rebase yourself, in the visualizer link at the top.
+
+Note:
+This command rewrites commit history, so don't use it and push changes to a remote branch,
+basically any branch where you are not working alone, it may create issues.
+> See https://git-scm.com/book/en/v2/Git-Branching-Rebasing#The-Perils-of-Rebasing
+
+// REBASING FOR GETTING CHANGES FROM A BRANCH
+
+git rebase main             (rebases the current branch onto `main`)
+git rebase main <branch>    (rebases <branch> onto `main`)
+
+
+// REBASING FOR MODIFYING HISTORY (INTERACTIVE)
+
+Info:
+Again, this rewrites history,
+so it will change the hashes of the commit we are modifying + all the subsequent commits. 
+So only do this on local branches,
+or branches where other people don't already have the history,
+it will rewrite the hashes.
+
+git rebase -i <commit-hash>         (will let you modify commits from the <commit-hash> to the latest commit in the current branch)
+git rebase -i HEAD~3                (same as above, but from 3 commits ago, instead of using hash)
+
+Some Important Interactive Rebase Commands:
+
+pick: Just use the same commit
+reword: Change the commit message
+fixup: Combines a commit into the previous one (can do this to multiple commits), keeps the message of the previous one
+drop: Remove the commit and the changes (IRREVERSIBLE)
+
+
+
+// GIT TAGS ======
+// ===============
+
+
+
+Info:
+Tags are usually used to mark important moments in a project,
+it points to a particular commit and it cannot be changed (unless using -f).
+
+
+// LIST ALL TAGS
+
+git tag              (here -l is implicitly added)
+
+
+// LIST ALL TAGS WITH FILTERED SEARCHING
+
+git tag -l "v10*"    (matches all tags starting with 'v10')
+
+
+// CREATE A TAG
+
+Info:
+Lightweight Tags: A lightweight tag is very much like a branch that doesn’t change — it’s just a pointer to a specific commit.
+Annotated Tags: These contain more information like tagger name, email, and a tagging message.
+
+git tag <tag-name>                      (creates a lightweight tag at the latest commit of current branch (HEAD))
+git tag <tag-name> <commit-hash>        (same as above, but it uses the commit provided to tag, and not the HEAD)
+git tag -a <tag-name>                   (creates an annotated tag at the HEAD, a prompt will open for a message)
+git tag -a <tag-name> -m <message>      (same as above, but we can specify a message here itself)
+
+
+// MOVE A TAG (FORCE)
+
+git tag <tag-name> -f                   (this will force to tag the HEAD, even if the tag already exists and points to another commit)
+git tag <tag-name> <commit-hash> -f     (same as above, but tags a particular commit instead of HEAD)
+
+
+// CHECK A PARTICULAR TAG
+
+git show <tag>
+
+
+// CHECKING OUT TO TAGS
+
+git tag checkout <tag>    (view the state of a repo at <tag>, leaves you in a detached HEAD state)
+
+
+// DIFFING TAGS
+
+git diff <tag1> <tag2>
+
+
+// DELETING TAGS
+
+git tag -d <tag(s)>
+
+
+// PUSHING TAGS
+
+Info:
+By default, when you push changes to a remote, 
+tags are not included. To push tags we have to specifically tell git.
+
+git push <remote> <tag>       (pushes <tag> to a remote server)
+git push <remote> --tags      (pushes all tags to a remote server)
+
+
+
+// INSIDE GIT: DEEP DIVE ======
+// ============================
+
+
+
+Info:
+This section will focus on the more advanced stuff, which aren't really essential,
+but good to know how git works behind the scenes. We will be looking inside different files,
+and directories inside .git folder.
+
+Warning: 
+You shoudn't edit any files inside .git directory directly, it may result in
+unforeseen issues.
+
+
+// THE CONFIG FILE
+
+Info:
+This is where the local configuration of the repo exists,
+for example, we will have the configured name and email here,
+or all the remotes we have added etc. We can set numerous settings for the configuration,
+all of which can be found here:
+> See https://git-scm.com/docs/git-config
+
+
+// THE REFS DIRECTORY
+
+Info:
+The refs directory stores the references for different branches, remote branches, tags etc.
+
+Heads Directory:
+It has a `heads` directory, where it stores all the current HEAD (latest commit in a branch) for all the branches.
+For example, if there are two branches: `main` and `test`,
+it will have two files called `main` and `test`, and inside those there will be a commit hash of the latest commit,
+in those branches, meaning the HEAD reference of those branches.
+
+Remotes Directory:
+In this directory, we will have different directories for each remote.
+Inside each such remote directory, separate files for each remote tracking branch will be present, 
+these files will also contain commit hashes, where the remote tracking branches are currently pointing to.
+
+Tags Directory:
+It's the same for the `tags` directory, it will contain separate files for each tag,
+and each file will contain the commit hash for the commit which was tagged.
+
+
+// THE HEAD FILE
+
+Info:
+It's the same concept, this file contains the current HEAD reference, 
+meaning the branch pointer to the latest commit on the branch. The difference here,
+is that it does not have a commit hash, but a reference to a file in the the `refs/head` directory.
+One thing to note here is, that when we are in detached HEAD state, this file will have a commit hash,
+of the checkout out commit, instead of a reference to a file in the `refs/head` directory.
+
+
+// THE OBJECTS DIRECTORY
+
+Info:
+This is basically the core of git, where git stores the backup repo files, 
+the commits of a repo and more. The files are compressed and encrypted, 
+so they won't be accessible to view. The information is stored in those files as binary (Blobs).
+Inside this directory, there are 4 different kinds of Git Objects, 
+`commit`, `tree`, `blob` and `annotated tag`, which are all hashed.
+
+Commit Hashes and SHA-1:
+Git uses a hashing function called SHA-1 (subject to change),
+the commit hashes we see are an output of SHA-1 hashing. 
+> SHA-1 always generates 40 digit hexadecimal values.
+> The outputs are deterministic, ie. we should always get the same output for same input.
+
+Git as a Datastore:
+Git is a key-value datastore. We can insert any content into a git repo,
+and git will hand us out a unique key we can use to later retrieve that content.
+These keys are SHA-1 checksums.
+
+Let's say for a file we stored, git gives us the SHA-1 checksum:
+`eea33d31dfc7eaaa905321ece72a5c87bdeba615`
+Now, in the `objects` directory, we will have a new folder called `ee`,
+inside which we will have a new file called `a33d31dfc7eaaa905321ece72a5c87bdeba615`,
+this file will contain the data we stored, but in a binary form (Blobs).
+
+So, basically, it will create a folder with the first 2 letters of the checksum as the name,
+and it will create a file inside it with the rest of the letters as the name, 
+and store the data as binary inside the file.
+
+Now, to actually check the data we have in the file, git gives us a command,
+
+git cat-file -p <SHA-1 checksum>        (the -p is for pretty print)
+
+
+Blobs (Binary Large Objects):
+Git blobs are the object type Git uses to store
+the contents of `files` in a repository. Blobs just stores the contents,
+and do not even include the filename or any other meta data.
+
+Trees:
+Trees are the object type Git uses to store
+the contents of a `directory`. Each tree contains pointers,
+that can refer to blobs and to other trees. Each entry in a tree contains
+the SHA-1 hash of a blob or tree, as well as the mode, type and filename.
+
+Basic Representation of Tree:
+
+Tree hash: 5c62b5aa08f761597c5b88d33e6b14b247acac2d
+---------------------------------------------------
+blob    |   7898192...    |   app.js
+tree    |   6178079...    |   images               ---> Will point to another tree
+blob    |   be23aff...    |   README
+tree    |   ae657da...    |   styles               ---> Will point to another tree
+---------------------------------------------------
+
+Commits:
+Commit objects combine a tree object along with information
+about the context that led to the current tree. Commits store a reference
+to parent commit(s), the author, the comitter, and the commit message.
+
+Basic Representation of A Commit Object:
+
+Commit hash: 5c62b5aa08f761597c5b88d33e6b14b247acac2d
+---------------------------------------------------
+tree      |   6178079...                           ---> Will point to another tree, of the actual content (which may be trees & blobs)
+parent    |   be23aff... (empty if first commit)   ---> Will point to the current HEAD commit (before making the commit)
+author    |   Jigen
+committer |   Jigen
+message   |   fix typo                             ---> The commit message
+---------------------------------------------------
+
+
+
+// REFLOGS ======
+// ==============
+
+
+
+Info:
+Git keeps a record of when the tips of branches
+and other references were updated in the repo.
+These records are called Reflogs. For example, there is
+a HEAD reflog, where git stores some data whenever HEAD is updated.
+
+Warning:
+Git only keeps reflogs of your local activity,
+so it is not shared with other collaborators. Also,
+Reflogs are cleaned by git every 90 days (configurable).
+We can also use reflogs to view diffs or checking out to a commit,
+using a reflog. Reflogs should only be used when we may have made 
+some irreversible changes which cannot be undone.
+
+
+// VIEWING A REFLOG
+
+git reflog <ref>
+
+Examples:
+git reflog HEAD
+git reflog main
+git reflog origin/main               (shows the reflog for the origin/main remote branch tip, ie, all the times it updated)
+git reflog test
+
+
+// VIEWING FROM A SPECIFIC REFLOG TO THE FIRST ONE
+
+git reflog <name@{qualifier}>
+
+Examples:
+git reflog main@{2}
+
+
+// VIEWING REFLOGS USING TIMED REFERENCES
+
+git reflog <ref>@{time}
+
+Examples:
+git reflog main@{1.day.ago}
+git reflog main@{yesterday}
+git reflog main@{10.minutes.ago}
+git reflog HEAD@{2.weeks.ago}
+git reflog main@{Sun Oct 10 21:16:57 2021 +0530}
+
+
+// EXAMPLES OF COMBINING DIFFERENT COMMANDS WITH REFLOGS
+
+git diff HEAD HEAD@{yesterday}
+git diff main main@{2.days.ago}
+git diff main main@{20.hours.ago}
+git diff main@{yesterday} test1
+
+git checkout main@{3.days.ago}        (checks out to the latest commit 3 days ago)
+git checkout test1@{1.week.ago}
+
+git log main@{5.days.ago}             (shows the log from the latest one 5 days ago to the first commit made)
+git log HEAD@{10.days.ago}
+
+
+// RESCUING LOST COMMITS WITH REFLOGS
+
+Info:
+Say, we reset a commit using --hard, and we lost it (including the working directory),
+we can use the reflog and again reset to a commit which was gone, but available in the reflogs.
+We can even undo a rebase with reflogs, so they are pretty powerful.
+
+Note:
+We can do the below operations with <name@{qualifier}> syntax instead of the hash. 
+
+git reset --hard f4b2552        (say we reset, and lost all commits after this commit hash)
+git reflog main                 (we check the reflog, and find the hash where we had those lost changes)
+git reset --hard 00bc8f9        (we get those lost changes back, by again, resetting, but this time, with a reflog hash)
+
+
+
+// GIT ALIASES ======
+// ==================
+
+
+
+Info:
+Using git aliases, we can make aliases for git commands
+as per our choice. For example,
+> git log --oneline
+For the above command, we can have an alias of:
+> git lone
+They can be anything custom, 
+and we can use as many aliases as we want.
+
+The local config file:
+To just setup aliases for single repositories,
+ie not globally, we can cd into the `.git` folder,
+and find the `config` file and define our aliases there.
+
+The global gitconfig file:
+The global config file for git lives in the
+home directory, we can use `~/` to cd into it.
+Then we can start making global aliases by defining:
+[alias]
+  <alias> = <command>
+
+Example Aliases:
+
+[alias]
+  st = status
+  lone = log --oneline
+  cm = commit -m
+
+
+// SETTING UP ALIASES FROM COMMAND LINE
+
+git config --global alias.<alias> <command>     (for global)
+git config alias.<alias> <command>              (for local)
+
+Examples:
+git config --global alias.st status
+git config --global alias.lone log --oneline
+
+
+// USING GIT ALIASES
+
+git st
+git cm "added new file"                          (whatever we pass after `git cm`, will be appended to the `git commit -m`)
+
+
+
+// REMOVING GIT FROM A PROJECT ======
+// ==================================
+
+
+
+Info:
+This will delete the .git folder, and you will lose
+all the reflogs and local configs present in the local repository.
+
+// DELETING GIT
+
+rm -rf .git
+
+
+
+
+FFFFFFFFFFFFFFFFFFFFFFIIIIIIIIIINNNNNNNN        NNNNNNNN
+F::::::::::::::::::::FI::::::::IN:::::::N       N::::::N
+F::::::::::::::::::::FI::::::::IN::::::::N      N::::::N
+FF::::::FFFFFFFFF::::FII::::::IIN:::::::::N     N::::::N
+  F:::::F       FFFFFF  I::::I  N::::::::::N    N::::::N
+  F:::::F               I::::I  N:::::::::::N   N::::::N
+  F::::::FFFFFFFFFF     I::::I  N:::::::N::::N  N::::::N
+  F:::::::::::::::F     I::::I  N::::::N N::::N N::::::N
+  F:::::::::::::::F     I::::I  N::::::N  N::::N:::::::N
+  F::::::FFFFFFFFFF     I::::I  N::::::N   N:::::::::::N
+  F:::::F               I::::I  N::::::N    N::::::::::N
+  F:::::F               I::::I  N::::::N     N:::::::::N
+FF:::::::FF           II::::::IIN::::::N      N::::::::N
+F::::::::FF           I::::::::IN::::::N       N:::::::N
+F::::::::FF           I::::::::IN::::::N        N::::::N
+FFFFFFFFFFF           IIIIIIIIIINNNNNNNN         NNNNNNN             
