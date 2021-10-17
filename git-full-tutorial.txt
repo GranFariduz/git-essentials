@@ -240,8 +240,8 @@ git merge --abort             (to abort the merge when a merge is ongoing (<main
 
 
 
-// DIFFS ======
-// ============
+// DIFFS AND BLAME ======
+// ======================
 
 
 
@@ -278,6 +278,21 @@ git diff <tag1> <tag2>                        (lists all changes between two tag
 
 HINT:
 We can use HEAD~1, HEAD~2 to refer to 1 or 2 commits ago (respectively) instead of using commit hashes.
+
+
+// GET INFORMATION ABOUT EACH LINE USING BLAME
+
+Info:
+We can use the `git blame` command to get 
+information about each line in a file, line by line, like who was
+the author of the change, when was it added etc.
+
+git blame <file>
+git blame -L 1,2 <file>                           (will limit the results to only line 1 and 2)
+git blame -L 1,+5 <file>                          (will limit the results to line 1 and 4 lines (ie. 5 lines) after it)
+git blame <tag> <file>                            (will show the info for the file upto when a certain tag was placed)
+git blame --since=1.week <file>                   (will show all the lines, but the ones which are just a week old, won't be prefixed with '^')
+git blame --since=1.week <file> | grep -v "^\^"   (same as above, but will only show the lines which are a week old)
 
 
 
@@ -435,8 +450,8 @@ git pull --rebase                 (uses rebase instead of merge, after fetching 
 
 
 
-// REBASE AND INTERACTIVE REBASE ======
-// ====================================
+// REBASE, INTERACTIVE REBASE, CHERRY PICKING AND PATCHING ======
+// ==============================================================
 
 
 
@@ -476,6 +491,30 @@ pick: Just use the same commit
 reword: Change the commit message
 fixup: Combines a commit into the previous one (can do this to multiple commits), keeps the message of the previous one
 drop: Remove the commit and the changes (IRREVERSIBLE)
+
+
+// CHERRY PICKING
+
+Info:
+Cherry picking in git is used to bring changes from
+one specific commit or commits to the current branch.
+This will create a new commit, with the same message as the commit
+we 'cherry-picked', unless we use the special `-n` flag.
+
+git cherry-pick <commit-hash(es)>       (will bring the changes from the commits, and make separate commits for each)
+git cherry-pick <commit-hash(es)> -n    (same as above, but will only stage the changes and not commit them)
+
+
+// APPLY COMMITS AS PATCHES
+
+Info:
+Does a similar job as cherry picking, but in a very
+different way. We create patch files that we can share with people,
+and they can use that to apply it to their repo and share their changes.
+
+git format-patch <branch> -o <output-dir>           (will create patches for all the commits in that branch, and output to the specified dir)
+git format-patch -1 <commit-hash> -o <output-dir>   (will create a single patch file for a commit, and output to the specified dir)
+git am <patch-dir>/<.patch file>                    (apply the patch from a file to the current branch)
 
 
 
